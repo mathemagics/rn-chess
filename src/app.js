@@ -9,11 +9,11 @@ import LoginForm from './components/LoginForm';
 class App extends Component {
   componentWillMount() {
     const config = {
-      apiKey: 'AIzaSyC-KoPLoQktHQLST4bpHbQrKD0Yw1Ry3z4',
+      apiKey: '',
       authDomain: 'rnchess-6ab60.firebaseapp.com',
       databaseURL: 'https://rnchess-6ab60.firebaseio.com',
       storageBucket: 'rnchess-6ab60.appspot.com',
-      messagingSenderId: '810097622106'
+      messagingSenderId: ''
     };
     firebase.initializeApp(config);
   }
