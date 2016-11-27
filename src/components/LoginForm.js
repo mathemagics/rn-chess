@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { Text } from 'react-native';
+import { Text } from 'react-native';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
@@ -49,14 +49,25 @@ class LoginForm extends Component {
             secureTextEntry
           />
         </CardSection>
+        <Text style={styles.errorTextStyle}>
+          {this.props.error}
+        </Text>
         <CardSection>
           {/* show spinner if loading, otherwise button */}
-          this.renderLoginButton();
+          {this.renderLoginButton()}
         </CardSection>
       </Card>
     );
   }
 }
+
+const styles = {
+  errorTextStyles: {
+    fontSize: 20,
+    alignSelf: 'center',
+    color: 'red'
+  }
+};
 
 const mapStateToProps = ({ auth }) => {
   const { email, password, loading, errors } = auth;
