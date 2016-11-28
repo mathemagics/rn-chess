@@ -1,16 +1,17 @@
 import firebase from 'firebase';
 
 import {
-  GAMES_FETCH_SUCCESS
+  GAMES_FETCH_SUCCESS,
 } from './types';
 
 export const gamesFetch = () => {
   return (dispatch) => {
-    firebase.database().ref('/games')
-      .on('value', snapshot => {
-        console.log(snapshot.val);
-        dispatch({ type: GAMES_FETCH_SUCCESS, payload: snapshot.val() });
-      });
+    const ref = firebase.database().ref('/games');
+    const openGames = ref.orderByChild('state').equalTo(1);
+    openGames.on('value', snapshot => {
+      console.log('onvalue');
+      dispatch({ type: GAMES_FETCH_SUCCESS, payload: snapshot.val() });
+    });
   };
 };
 
@@ -31,7 +32,7 @@ export const createGame = () => {
                 console.log('error creating game.', error);
             } else {
                 //disable access to joining other games
-                console.log('created game!', key);
+                // console.log('created game!', key);
                 //drop this game, if I disconnect
                 key.onDisconnect().remove();
                 // watchGame(key.key);
