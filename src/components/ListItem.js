@@ -1,21 +1,28 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { connect } from 'react-redux';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { CardSection } from './common';
+import { joinGame } from '../actions';
 
 class ListItem extends Component {
+
+  onRowPress() {
+    this.props.joinGame(this.props.game.gameId);
+  }
   render() {
     const { uid } = this.props.game.creator;
-    console.log('in list view', this.props.game);
     return (
-      <View>
-          <CardSection>
-            <Text
-              style={styles.textStyle}
-            >
-              {uid}
-            </Text>
-          </CardSection>
-      </View>
+      <TouchableOpacity onPress={this.onRowPress.bind(this)}>
+        <View>
+            <CardSection>
+              <Text
+                style={styles.textStyle}
+              >
+                {uid}
+              </Text>
+            </CardSection>
+        </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -27,4 +34,4 @@ const styles = {
   }
 };
 
-export default ListItem;
+export default connect(null, { joinGame })(ListItem);

@@ -35,7 +35,6 @@ class GamesList extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <View>
         <CardSection>
