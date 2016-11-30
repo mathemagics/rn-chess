@@ -43,8 +43,8 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: 'black',
-    borderWidth: 1
+    borderColor: 'white',
+    borderWidth: 2
   }
 };
 

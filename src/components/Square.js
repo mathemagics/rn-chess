@@ -10,6 +10,8 @@ class Square extends Component {
       style={{
         height: 36,
         width: 36,
+        borderColor: 'black',
+        borderWidth: 1,
         backgroundColor
       }}
       />

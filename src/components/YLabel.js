@@ -1,40 +1,37 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 
-class XLabel extends Component {
+class YLabel extends Component {
   componentWillMount() {
     const { textStyles } = styles;
-    const vals = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-    this.textVals = vals.map((letter) => {
-      return <Text key={letter} style={textStyles}>{letter}</Text>;
+    const vals = ['1', '2', '3', '4', '5', '6', '7', '8'];
+    this.textVals = vals.map(val => {
+      return <Text key={val} style={textStyles}>{val}</Text>;
     });
   }
   render() {
     const { containerStyles } = styles;
     return (
       <View style={containerStyles}>
-        {this.textVals}
+          {this.textVals}
       </View>
-
     );
   }
 }
-
 const styles = {
   textStyles: {
     flex: 1,
+    textAlign: 'center',
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold'
   },
   containerStyles: {
-    height: 30,
-    width: 352,
-    paddingLeft: 42,
-    paddingRight: 20,
-    flexDirection: 'row',
+    paddingTop: 12,
+    height: 292,
+    width: 30,
+    flexDirection: 'column',
     backgroundColor: '#1A3461'
   }
 };
-
-export default XLabel;
+export default YLabel;
