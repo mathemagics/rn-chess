@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import Board from './Board';
 
 class Game extends Component {
+
   render() {
-    return (
-      <View>
-        <Text>
-          Game
-        </Text>
-      </View>
+  return (
+      <Board />
     );
   }
 }
