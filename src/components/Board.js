@@ -9,13 +9,11 @@ class Board extends Component {
     for (let i = 0; i < 8; i++) {
      for (let j = 0; j < 8; j++) {
       const color = (i + j) % 2 !== 0 ? 'black' : 'white';
-      // const x = i.toString();
       this.boardProps[i] = this.boardProps[i] ? this.boardProps[i] : [];
       this.boardProps[i][j] = { loc: `${i}${j}`, color };
       }
     }
     for (let i = 0; i < 8; i++) {
-      // const x = i.toString();
       this.board[i] = this.boardProps[i].map(info => {
         const { color, loc } = info;
          return <Square key={loc} color={color} loc={loc} />;
@@ -42,7 +40,6 @@ class Board extends Component {
 
 const styles = {
   boardStyles: {
-    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
