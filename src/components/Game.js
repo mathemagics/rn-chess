@@ -25,7 +25,6 @@ class Game extends Component {
             <Board />
             <YLabel />
           </View>
-
           <XLabel />
         </View>
       </CardSection>
