@@ -28,8 +28,8 @@ const styles = {
     fontWeight: 'bold'
   },
   containerStyles: {
-    height: 30,
-    width: 352,
+    height: 28,
+    width: 336,
     paddingLeft: 42,
     paddingRight: 20,
     flexDirection: 'row',

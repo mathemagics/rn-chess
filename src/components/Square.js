@@ -88,8 +88,8 @@ class Square extends Component {
 
   render() {
   const squareStyles = {
-          height: 36,
-          width: 36,
+          height: 35,
+          width: 35,
           borderColor: 'black',
           borderWidth: 1,
           backgroundColor: this.state.highlighted ? 'green' : this.defaultColor,
@@ -109,14 +109,10 @@ class Square extends Component {
 const styles = {
   pieceStyles: {
     textAlign: 'center',
-    fontSize: 36,
-    // fontWeight: '600',
+    fontSize: 34,
+    color: 'black',
     alignSelf: 'center',
-    lineHeight: 40,
-    textShadowColor: '000',
-    textShadowOffset: { width: 3, height: 3 },
-    textShadowRadius: 3
-
+    lineHeight: 38
   }
 };
 
