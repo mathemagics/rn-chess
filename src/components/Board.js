@@ -25,14 +25,14 @@ class Board extends Component {
     const { boardStyles } = styles;
     return (
       <View style={boardStyles}>
-        <View style={{ flexDirection: 'row' }}>{this.board['0']}</View>
-        <View style={{ flexDirection: 'row' }}>{this.board['1']}</View>
-        <View style={{ flexDirection: 'row' }}>{this.board['2']}</View>
-        <View style={{ flexDirection: 'row' }}>{this.board['3']}</View>
-        <View style={{ flexDirection: 'row' }}>{this.board['4']}</View>
-        <View style={{ flexDirection: 'row' }}>{this.board['5']}</View>
-        <View style={{ flexDirection: 'row' }}>{this.board['6']}</View>
         <View style={{ flexDirection: 'row' }}>{this.board['7']}</View>
+        <View style={{ flexDirection: 'row' }}>{this.board['6']}</View>
+        <View style={{ flexDirection: 'row' }}>{this.board['5']}</View>
+        <View style={{ flexDirection: 'row' }}>{this.board['4']}</View>
+        <View style={{ flexDirection: 'row' }}>{this.board['3']}</View>
+        <View style={{ flexDirection: 'row' }}>{this.board['2']}</View>
+        <View style={{ flexDirection: 'row' }}>{this.board['1']}</View>
+        <View style={{ flexDirection: 'row' }}>{this.board['0']}</View>
       </View>
     );
   }
