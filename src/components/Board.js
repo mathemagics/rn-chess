@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { View } from 'react-native';
 import Square from './Square';
+import { startGame } from '../actions';
 
 class Board extends Component {
   componentWillMount() {
+    this.props.startGame();
     this.boardProps = {};
     this.board = {};
     for (let i = 0; i < 8; i++) {
@@ -19,8 +22,11 @@ class Board extends Component {
          return <Square key={loc} color={color} loc={loc} />;
       });
     }
-    console.log(this.boardProps);
   }
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+  }
+
   render() {
     const { boardStyles } = styles;
     return (
@@ -48,4 +54,10 @@ const styles = {
   }
 };
 
-export default Board;
+const mapStateToProps = ({ chess }) => {
+  const { board, highlighted } = chess;
+  console.log('mstp board:', board, ' highlighted:', highlighted);
+  return { highlighted, board };
+};
+
+export default connect(mapStateToProps, { startGame })(Board);

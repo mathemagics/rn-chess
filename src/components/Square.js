@@ -10,6 +10,7 @@ class Square extends Component {
 
     this.defaultColor = this.props.color === 'black' ? '#C98F55' : '#F0D9C2';
     this.state = {
+      prevHigh: [],
       highlighted: false,
     };
     switch (props.loc) {
@@ -74,7 +75,9 @@ class Square extends Component {
     }
   }
   componentWillReceiveProps(nextProps) {
+    this.setState({ ...this.state, prevHigh: this.props.highlighted });
     const { highlighted, loc } = nextProps;
+    // console.log(highlighted, 'and', loc);
     if (highlighted.includes(loc)) {
       this.setState({ highlighted: true });
     } else if (this.state.highlighted) {
@@ -83,7 +86,8 @@ class Square extends Component {
   }
 
   pressSquare() {
-    this.props.clickSquare(this.props.loc);
+    const { loc, board, highlighted } = this.props;
+    this.props.clickSquare(loc, board, highlighted);
   }
 
   render() {
@@ -117,8 +121,8 @@ const styles = {
 };
 
 const mapStateToProps = ({ chess }) => {
- const { highlighted } = chess;
- return { highlighted };
+ const { highlighted, board } = chess;
+ return { highlighted, board };
 };
 
 export default connect(mapStateToProps, { clickSquare })(Square);
