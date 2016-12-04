@@ -3,7 +3,7 @@ import Piece from './Piece';
 class Rook extends Piece {
   constructor(color) {
   super(color);
-  this.code = color === 'white' ? '&#9814' : '&#9820';
+  this.code = color === 'white' ? '\u2656' : '\u265C';
   }
 
   movement(row, col, board) {

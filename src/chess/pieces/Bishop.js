@@ -4,7 +4,7 @@ class Bishop extends Piece {
 
   constructor(color) {
   super(color);
-  this.code = color === 'white' ? '&#9815' : '&#9821';
+  this.code = color === 'white' ? '\u2657' : '\u265D';
   }
 
   movement(r1, c1, board) {

@@ -27,12 +27,16 @@ export const joinGame = (gameId) => {
     const user = firebase.auth().currentUser;
     const ref = firebase.database().ref('/games/');
     ref.child(gameId).transaction(game => {
-      console.log('game', game);
       if (!game.joiner) {
+        const side = Math.random < 0.5 ? 'white' : 'black';
+        const otherSide = side === 'white' ? 'black' : 'white';
         game.state = 2;
         game.joiner = {
             uid: user.uid,
+            side
         };
+        game.creator.side = otherSide;
+        console.log('game:', game);
         return game;
       }
     });
@@ -56,7 +60,7 @@ export const createGame = () => {
             if (error) {
                 console.log('error creating game.', error);
             } else {
-                //drop this game, if cseator disconnecta
+                //drop this game, if creator disconnecta
                 key.onDisconnect().remove();
             }
         });

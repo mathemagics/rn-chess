@@ -3,7 +3,7 @@ import Piece from './Piece';
 class King extends Piece {
   constructor(color) {
   super(color);
-  this.code = color === 'white' ? '&#9812' : '&#9818';
+  this.code = color === 'white' ? '\u2654' : '\u265A';
   }
   movement(r1, c1, board) {
     const row1 = parseInt(r1, 10);

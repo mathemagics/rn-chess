@@ -4,7 +4,7 @@ class Knight extends Piece {
 
   constructor(color) {
     super(color);
-    this.code = color === 'white' ? '&#9816' : '&#9822';
+    this.code = color === 'white' ? '\u2658' : '\u265E';
   }
 
   movement(row1, col1, board) {

@@ -1,43 +1,35 @@
+// import firebase from 'firebase';
 import Chess from '../chess/chess';
 // import { Actions } from 'react-native-router-flux';
-// import firebase from './firebase';
 
 import {
-  CLICK_SQUARE,
-  START_GAME
+  CLICK_OWN_PIECE,
+  CLICK_OTHER,
+  MAKE_MOVE
 } from './types';
 
-export const startGame = () => {
-  const board = Chess.startBoard();
-  return {
-    type: START_GAME,
-    payload: board
-  };
-};
-
-export const clickSquare = (sq, board, highlighted) => {
+export const clickSquare = (sq, board, highlighted, prev) => {
   const r = parseInt(sq[0], 10);
   const c = parseInt(sq[1], 10);
-  console.log('hi:', highlighted);
-  console.log('sq:', sq);
 
-  // add check color of piece
   if (highlighted.includes(sq.toString())) {
-    console.log('move!');
+    // if clicking on an available move sq
+    const nextBoard = Chess.movePiece(prev, sq, board);
     return {
-      type: CLICK_SQUARE,
-      payload: []
+      type: MAKE_MOVE,
+      payload: { prev, sq, nextBoard }
     };
   } else if (board[r][c]) {
+    // if clicking on your own piece
       const moves = board[r][c].movement(sq[0], sq[1], board);
       return {
-        type: CLICK_SQUARE,
-        payload: moves
+        type: CLICK_OWN_PIECE,
+        // payload contains, row, col of selected piece
+        // and it's associated moves
+        payload: { moves, r, c }
       };
-  } else {
-    return {
-      type: CLICK_SQUARE,
-      payload: []
-    };
   }
+    return {
+      type: CLICK_OTHER,
+    };
 };

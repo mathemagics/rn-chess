@@ -4,7 +4,7 @@ class Pawn extends Piece {
 
   constructor(color) {
     super(color);
-    this.code = color === 'white' ? '&#9817' : '&#9823';
+    this.code = color === 'white' ? '\u2659' : '\u265F';
   }
 
   movement(row, col, board) {
@@ -21,7 +21,6 @@ class Pawn extends Piece {
           this.possible_moves.push([row1 + 2, col1]);
         }
       }
-      console.log('pawn1', this.possible_moves);
       //  checking attacking squares
       if (row1 + 1 < 8 && col1 - 1 >= 0) {
         if ((board[row1 + 1][col1 - 1] &&

@@ -4,7 +4,7 @@ class Queen extends Piece {
 
   constructor(color) {
     super(color);
-    this.code = color === 'white' ? '&#9813' : '&#9819';
+    this.code = color === 'white' ? '\u2655' : '\u265B';
   }
   movement(r, c, board) {
     const row1 = parseInt(r, 10);

@@ -2,30 +2,52 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
 import Square from './Square';
-import { startGame } from '../actions';
+import { clickSquare } from '../actions';
 
 class Board extends Component {
-  componentWillMount() {
-    this.props.startGame();
-    this.boardProps = {};
+  constructor(props) {
+    super(props);
+    this.drawBoard(this.props.board);
+  }
+  componentWillReceiveProps({ highlighted, board }) {
+    this.drawBoard(board, highlighted);
+  }
+  drawBoard(chessBoard, highlighted) {
+    console.log('highlighted:', highlighted);
+    const boardProps = {};
     this.board = {};
     for (let i = 0; i < 8; i++) {
      for (let j = 0; j < 8; j++) {
-      const color = (i + j) % 2 !== 0 ? 'black' : 'white';
-      this.boardProps[i] = this.boardProps[i] ? this.boardProps[i] : [];
-      this.boardProps[i][j] = { loc: `${i}${j}`, color };
+      const color = (i + j) % 2 !== 0 ? '#C98F55' : '#F0D9C2';
+      const piece = chessBoard[i][j] ? this.props.board[i][j].code : '';
+      const highlight = highlighted && highlighted.includes(`${i}${j}`);
+      boardProps[i] = boardProps[i] ? boardProps[i] : [];
+      boardProps[i][j] = { loc: `${i}${j}`, piece, color, highlight };
       }
     }
     for (let i = 0; i < 8; i++) {
-      this.board[i] = this.boardProps[i].map(info => {
-        const { color, loc } = info;
-         return <Square key={loc} color={color} loc={loc} />;
+      this.board[i] = boardProps[i].map(info => {
+        const { color, loc, piece, highlight } = info;
+         return (
+           <Square
+             key={loc}
+             color={color}
+             loc={loc}
+             piece={piece}
+             highlight={highlight}
+             onPress={this.pressFunction(loc)}
+           />
+         );
       });
     }
   }
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-  }
+
+pressFunction(loc) {
+  return () => {
+    const { board, highlighted, prev } = this.props;
+    this.props.clickSquare(loc, board, highlighted, prev);
+  };
+}
 
   render() {
     const { boardStyles } = styles;
@@ -55,9 +77,8 @@ const styles = {
 };
 
 const mapStateToProps = ({ chess }) => {
-  const { board, highlighted } = chess;
-  console.log('mstp board:', board, ' highlighted:', highlighted);
-  return { highlighted, board };
+  const { board, highlighted, prev } = chess;
+  return { highlighted, board, prev };
 };
 
-export default connect(mapStateToProps, { startGame })(Board);
+export default connect(mapStateToProps, { clickSquare })(Board);

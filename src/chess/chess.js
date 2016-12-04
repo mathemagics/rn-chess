@@ -26,6 +26,7 @@ class Chess {
     board[0][6] = new Knight('white');
     board[0][7] = new Rook('white');
     board[7][0] = new Rook('black');
+    board[7][1] = new Knight('black');
     board[7][2] = new Bishop('black');
     board[7][3] = new Queen('black');
     board[7][4] = new King('black');
@@ -35,10 +36,15 @@ class Chess {
     return (board);
   }
 
-  movePiece = (sRow, sCol, newBoard) => {
+  static movePiece = (prev, sq, newBoard) => {
+    const pRow = parseInt(prev[0], 10);
+    const pCol = parseInt(prev[1], 10);
+    const sRow = parseInt(sq[0], 10);
+    const sCol = parseInt(sq[1], 10);
     const board = newBoard;
+    const thisPiece = board[pRow][pCol];
     // checking if castle
-    if (this.thisPiece.constructor.name === 'King' && this.thisPiece.initial) {
+    if (thisPiece.constructor.name === 'King' && thisPiece.initial) {
         // checking which rook to swap
         if (sRow === 0 && sCol === 6) {
           board[0][5] = board[0][7];
@@ -53,7 +59,7 @@ class Chess {
           board[7][3] = board[7][0];
           board[7][0] = null;
         }
-    } else if (this.thisPiece.constructor.name === 'Pawn') {
+    } else if (thisPiece.constructor.name === 'Pawn') {
       // setting promotion:
       if (sRow === 7 || sRow === 0) {
         this.setPromotion();
@@ -63,9 +69,9 @@ class Chess {
       }
     }
     // setting real board
-    board[sRow][sCol] = board[this.pRow][this.pCol];
-    board[this.pRow][this.pCol] = null;
-
+    board[sRow][sCol] = board[pRow][pCol];
+    board[pRow][pCol] = null;
+    return board;
     // this.lastMove = { piece: this.thisPiece.constructor.name, pRow, pCol, sRow, sCol };
   }
 
@@ -227,13 +233,5 @@ class Chess {
     }
     return false;
   }
-
-  reset = () => {
-    this.availMoves = [];
-    this.thisPiece.initial = false;
-    this.thisPiece = null;
-    this.turn = this.turn === 'white' ? 'black' : 'white';
-  }
-
 }
 export default Chess;
