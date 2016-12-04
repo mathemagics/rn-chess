@@ -13,29 +13,31 @@ class Board extends Component {
     this.drawBoard(board, highlighted);
   }
   drawBoard(chessBoard, highlighted) {
-    console.log('highlighted:', highlighted);
     const boardProps = {};
     this.board = {};
     for (let i = 0; i < 8; i++) {
      for (let j = 0; j < 8; j++) {
       const color = (i + j) % 2 !== 0 ? '#C98F55' : '#F0D9C2';
-      const piece = chessBoard[i][j] ? this.props.board[i][j].code : '';
+      const piece = chessBoard[i][j];
+      const symbol = piece ? piece.code : '';
       const highlight = highlighted && highlighted.includes(`${i}${j}`);
+      const loc = `${i}${j}`;
+      // add onPress handler if 'turn' matches 'piece color'
+      const pressFun = this.pressFunction(loc);
       boardProps[i] = boardProps[i] ? boardProps[i] : [];
-      boardProps[i][j] = { loc: `${i}${j}`, piece, color, highlight };
+      boardProps[i][j] = { loc, symbol, color, highlight, pressFun };
       }
     }
     for (let i = 0; i < 8; i++) {
       this.board[i] = boardProps[i].map(info => {
-        const { color, loc, piece, highlight } = info;
+        const { color, loc, symbol, highlight, pressFun } = info;
          return (
            <Square
              key={loc}
              color={color}
-             loc={loc}
-             piece={piece}
+             piece={symbol}
              highlight={highlight}
-             onPress={this.pressFunction(loc)}
+             onPress={pressFun}
            />
          );
       });
@@ -44,8 +46,8 @@ class Board extends Component {
 
 pressFunction(loc) {
   return () => {
-    const { board, highlighted, prev } = this.props;
-    this.props.clickSquare(loc, board, highlighted, prev);
+    const { board, highlighted, prev, turn } = this.props;
+    this.props.clickSquare(loc, board, highlighted, prev, turn);
   };
 }
 
@@ -77,8 +79,8 @@ const styles = {
 };
 
 const mapStateToProps = ({ chess }) => {
-  const { board, highlighted, prev } = chess;
-  return { highlighted, board, prev };
+  const { board, highlighted, prev, turn } = chess;
+  return { highlighted, board, prev, turn };
 };
 
 export default connect(mapStateToProps, { clickSquare })(Board);

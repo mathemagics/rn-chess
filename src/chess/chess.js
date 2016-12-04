@@ -75,7 +75,7 @@ class Chess {
     // this.lastMove = { piece: this.thisPiece.constructor.name, pRow, pCol, sRow, sCol };
   }
 
-  checkCheck = (sRow, sCol, board) => {
+  static checkCheck(sRow, sCol, board) {
      const movesArr = board[sRow][sCol].movement(sRow, sCol);
      for (let i = 0, n = movesArr.length; i < n; i++) {
        const atkd = board[movesArr[i][0]][movesArr[i][1]];
@@ -86,60 +86,64 @@ class Chess {
      }
   }
 
-  // returns true if current move removes check
-  // thisPiece is attacking piece from prow,pcol to srow,scol
-  removeCheck = () => {
-    const takenSpot = this.board[this.sRow][this.sCol];
-    this.board[this.sRow][this.sCol] = this.board[this.pRow][this.pCol];
-    this.board[this.pRow][this.pCol] = null;
-
+  static checkCheckmate(board, turn) {
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         // getting enemy pieces
-        const atkr = this.board[i][j];
-        if (atkr && atkr.color !== this.thisPiece.color) {
-          const movesArr = atkr.movement(i, j);
+        const thisPiece = board[i][j];
+        if (thisPiece && thisPiece.color !== turn) {
+          const movesArr = thisPiece.movement(i, j, board);
+          for (let k = 0, n = movesArr.length; k < n; k++) {
+            const pRow = i;
+            const pCol = j;
+            const sRow = movesArr[k][0];
+            const sCol = movesArr[k][1];
+            if (this.removeCheck(sRow, sCol, pRow, pCol, board, turn)) { return false; }
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  // returns true if current move removes check
+  // thisPiece is attacking piece from prow, pcol to srow,scol
+  static removeCheck(sRow, sCol, pRow, pCol, board, turn) {
+    const takenSpot = board[sRow][sCol];
+    console.log(board[pRow][pCol]);
+    board[sRow][sCol] = board[pRow][pCol];
+    board[pRow][pCol] = null;
+    const checkColor = turn === 'white' ? 'black' : 'white';
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        // getting enemy pieces
+        const atkr = board[i][j];
+        if (atkr && atkr.color !== checkColor) {
+          const movesArr = atkr.movement(i, j, board);
+
           // checking if our king is in their movelist
           for (let k = 0, n = movesArr.length; k < n; k++) {
-            const atkd = this.board[movesArr[k][0]][movesArr[k][1]];
+            const atkd = board[movesArr[k][0]][movesArr[k][1]];
 
-            if (atkd && atkd instanceof King && atkd.color === this.thisPiece.color) {
+            if (atkd && atkd instanceof King && atkd.color === checkColor) {
               console.log('still in check');
-              this.board[this.pRow][this.pCol] = this.board[this.sRow][this.sCol];
-              this.board[this.sRow][this.sCol] = takenSpot;
+              board[pRow][pCol] = board[sRow][sCol];
+              board[sRow][sCol] = takenSpot;
               return false;
             }
           }
         }
       }
     }
-    this.board[this.pRow][this.pCol] = this.board[this.sRow][this.sCol];
-    this.board[this.sRow][this.sCol] = takenSpot;
+    board[pRow][pCol] = board[sRow][sCol];
+    board[sRow][sCol] = takenSpot;
     return true;
   }
 
   // after making a move that checks the enemy king.
   // we look to see if the enemy has an available move to remove checks
   // before switching turns
-  checkCheckmate = (board) => {
-    for (let i = 0; i < 8; i++) {
-      for (let j = 0; j < 8; j++) {
-        // getting enemy pieces
-        this.thisPiece = board[i][j];
-        if (this.thisPiece && this.thisPiece.color !== this.turn) {
-          const movesArr = this.thisPiece.movement(i, j);
-          for (let k = 0, n = movesArr.length; k < n; k++) {
-            this.pRow = i;
-            this.pCol = j;
-            this.sRow = movesArr[k][0];
-            this.sCol = movesArr[k][1];
-            if (this.removeCheck()) { return false; }
-          }
-        }
-      }
-    }
-    return true;
-  }
+
 
   // setPromotion = () => {
   //   promoting = true;
@@ -192,8 +196,18 @@ class Chess {
   //   reset();
   // }
 
+  static checkCheck = (sRow, sCol, board) => {
+    const thisPiece = board[sRow][sCol];
+     const movesArr = thisPiece.movement(sRow, sCol, board);
+     for (let i = 0, n = movesArr.length; i < n; i++) {
+       const atkd = board[movesArr[i][0]][movesArr[i][1]];
+       if (atkd && atkd instanceof King && atkd.color !== thisPiece.color) {
+           return true;
+       }
+     }
+  }
+
   processMove = () => {
-    this.resetColors(this.pRow, this.pCol);
     if (!this.check || this.removeCheck()) {
       this.movePiece();
       if (!this.promoting) {

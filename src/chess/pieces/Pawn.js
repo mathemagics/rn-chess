@@ -7,9 +7,9 @@ class Pawn extends Piece {
     this.code = color === 'white' ? '\u2659' : '\u265F';
   }
 
-  movement(row, col, board) {
+  movement(row, col, newBoard) {
     this.possible_moves = [];
-    this.board = board;
+    const board = newBoard;
     const row1 = parseInt(row, 10);
     const col1 = parseInt(col, 10);
     if (this.color === 'white') {
