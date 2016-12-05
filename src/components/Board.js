@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
 import Square from './Square';
-import { clickSquare } from '../actions';
+import { clickSquare, promotePawn } from '../actions';
+import Promotion from './Promotion';
 
 class Board extends Component {
   constructor(props) {
@@ -51,6 +52,13 @@ pressFunction(loc) {
   };
 }
 
+clickPromote(piece) {
+  return () => {
+    const { activeSq, board, turn } = this.props;
+    this.props.promotePawn(activeSq, piece, board, turn);
+  };
+}
+
   render() {
     const { boardStyles } = styles;
     return (
@@ -63,6 +71,11 @@ pressFunction(loc) {
         <View style={{ flexDirection: 'row' }}>{this.board['2']}</View>
         <View style={{ flexDirection: 'row' }}>{this.board['1']}</View>
         <View style={{ flexDirection: 'row' }}>{this.board['0']}</View>
+        <Promotion
+          visible={this.props.promoting}
+          color='white'
+          onPress={this.clickPromote.bind(this)}
+        />
       </View>
     );
   }
@@ -79,8 +92,8 @@ const styles = {
 };
 
 const mapStateToProps = ({ chess }) => {
-  const { board, highlighted, prev, turn } = chess;
-  return { highlighted, board, prev, turn };
+  const { board, highlighted, prev, promoting, turn, activeSq } = chess;
+  return { highlighted, board, prev, turn, promoting, activeSq };
 };
 
-export default connect(mapStateToProps, { clickSquare })(Board);
+export default connect(mapStateToProps, { clickSquare, promotePawn })(Board);

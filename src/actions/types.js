@@ -7,3 +7,5 @@ export const GAMES_FETCH_SUCCESS = 'games_fetch_success';
 export const CLICK_OWN_PIECE = 'click_own_piece';
 export const CLICK_OTHER = 'click_other';
 export const MAKE_MOVE = 'make_move';
+export const PROMOTION = 'promotion';
+export const PROMOTE_PAWN = 'promote_pawn';

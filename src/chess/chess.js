@@ -62,16 +62,15 @@ class Chess {
     } else if (thisPiece.constructor.name === 'Pawn') {
       // setting promotion:
       if (sRow === 7 || sRow === 0) {
-        this.setPromotion();
-        return;
-      } else if (Math.abs(this.pCol - sCol) === 1 && !board[sRow][sCol]) {
+        return { response: 'promote', nextBoard: board };
+      } else if (Math.abs(pCol - sCol) === 1 && !board[sRow][sCol]) {
         // removing attacked piece through en passant
       }
     }
     // setting real board
     board[sRow][sCol] = board[pRow][pCol];
     board[pRow][pCol] = null;
-    return board;
+    return { response: 'move', nextBoard: board };
     // this.lastMove = { piece: this.thisPiece.constructor.name, pRow, pCol, sRow, sCol };
   }
 
@@ -140,61 +139,40 @@ class Chess {
     return true;
   }
 
-  // after making a move that checks the enemy king.
-  // we look to see if the enemy has an available move to remove checks
-  // before switching turns
 
-
-  // setPromotion = () => {
-  //   promoting = true;
-  //   cover = document.getElementById('cover');
-  //   cover.style.display = 'block';
-  //   document.getElementById('queen').onclick = function () {
-  //     promote(this.id);
-  //   };
-  //   document.getElementById('knight').onclick = function () {
-  //     promote(this.id);
-  //   };
-  //   document.getElementById('bishop').onclick = function () {
-  //     promote(this.id);
-  //   };
-  //   document.getElementById('rook').onclick = function () {
-  //     promote(this.id);
-  //   };
-  // }
-  //
-  // promote = id => {
-  //   let promoted;
-  //   switch (id) {
-  //     case 'queen':
-  //       promoted = new Queen(turn);
-  //     break;
-  //     case 'rook':
-  //       promoted = new Rook(turn);
-  //     break;
-  //     case 'bishop':
-  //       promoted = new Bishop(turn);
-  //     break;
-  //     case 'knight':
-  //       promoted = new Knight(turn);
-  //     break;
-  //     default:
-  //     break;
-  //   }
-  //   board[sRow][sCol] = promoted;
-  //   board[pRow][pCol] = null;
-  //   table.rows[sRow].cells[sCol].innerHTML = promoted.code;
-  //   table.rows[pRow].cells[pCol].innerHTML = '';
-  //   cover.style.display = 'none';
-  //   promoting = false;
-  //   if (checkCheck()) {
-  //     check = true;
-  //     if (checkCheckmate()) {
-  //       endGame();
-  //     }
-  //   }
-  //   reset();
-  // }
+  static setPromotion(sRow, sCol, piece, board, turn) {
+    let promoted;
+    switch (piece) {
+      case '\u2655':
+      case '\u265B':
+        promoted = new Queen(turn);
+      break;
+      case '\u2656':
+      case '\u265C':
+        promoted = new Rook(turn);
+      break;
+      case '\u2657':
+      case '\u265D':
+        promoted = new Bishop(turn);
+      break;
+      case '\u2658':
+      case '\u265E':
+        promoted = new Knight(turn);
+      break;
+      default:
+      break;
+    }
+    board[sRow][sCol] = promoted;
+    return board;
+    // promoting = false;
+    // if (this.checkCheck()) {
+    //   check = true;
+    //   if (this.checkCheckmate()) {
+    //     endGame();
+    //   }
+    // }
+    // reset();
+  }
 
   static checkCheck = (sRow, sCol, board) => {
     const thisPiece = board[sRow][sCol];

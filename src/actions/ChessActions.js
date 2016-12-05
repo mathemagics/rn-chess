@@ -5,8 +5,23 @@ import Chess from '../chess/chess';
 import {
   CLICK_OWN_PIECE,
   CLICK_OTHER,
-  MAKE_MOVE
+  MAKE_MOVE,
+  PROMOTION,
+  PROMOTE_PAWN
 } from './types';
+
+export const promotePawn = (sq, piece, board, turn) => {
+  console.log(sq);
+  const r = parseInt(sq[0], 10);
+  const c = parseInt(sq[1], 10);
+
+  const nextBoard = Chess.setPromotion(r, c, piece, board, turn);
+  checkForCheck(r, c, nextBoard, turn);
+  return {
+    type: PROMOTE_PAWN,
+    payload: { nextBoard }
+  };
+};
 
 export const clickSquare = (sq, board, highlighted, prev, turn) => {
   const r = parseInt(sq[0], 10);
@@ -14,13 +29,15 @@ export const clickSquare = (sq, board, highlighted, prev, turn) => {
 
   if (highlighted.includes(sq.toString())) {
     // if clicking on an available move sq
-    const nextBoard = Chess.movePiece(prev, sq, board);
+    const { response, nextBoard } = Chess.movePiece(prev, sq, board);
 
-    if (Chess.checkCheck(r, c, nextBoard)) {
-      console.log('CHECK!');
-      if (Chess.checkCheckmate(nextBoard, turn)) {
-        console.log('Checkmate');
-      }
+    if (response === 'promote') {
+      return {
+        type: PROMOTION,
+        payload: sq
+      };
+    } else if (response === 'move') {
+      checkForCheck(r, c, nextBoard, turn);
     }
     return {
       type: MAKE_MOVE,
@@ -39,4 +56,13 @@ export const clickSquare = (sq, board, highlighted, prev, turn) => {
     return {
       type: CLICK_OTHER,
     };
+};
+
+const checkForCheck = (r, c, nextBoard, turn) => {
+  if (Chess.checkCheck(r, c, nextBoard)) {
+    console.log('CHECK!');
+    if (Chess.checkCheckmate(nextBoard, turn)) {
+      console.log('Checkmate');
+    }
+  }
 };
