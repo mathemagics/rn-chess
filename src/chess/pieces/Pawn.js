@@ -25,14 +25,14 @@ class Pawn extends Piece {
       if (row1 + 1 < 8 && col1 - 1 >= 0) {
         if ((board[row1 + 1][col1 - 1] &&
           board[row1 + 1][col1 - 1].color !== this.color) ||
-          (this.checkEnpassant() === col1 - 1 && row1 + 1 === 5)) {
+          (board[row1 + 1][col1 - 1] === 'enpassant')) {
           this.possible_moves.push([row1 + 1, col1 - 1]);
         }
       }
       if (row1 + 1 < 8 && col1 + 1 < 8) {
         if ((board[row1 + 1][col1 + 1]
           && board[row1 + 1][col1 + 1].color !== this.color)
-          || (this.checkEnpassant() === col1 + 1 && row1 + 1 === 5)) {
+          || (board[row1 + 1][col1 + 1] === 'enpassant')) {
           this.possible_moves.push([row1 + 1, col1 + 1]);
         }
       }
@@ -49,14 +49,14 @@ class Pawn extends Piece {
       if (row1 - 1 >= 0 && col1 - 1 >= 0) {
         if ((board[row1 - 1][col1 - 1]
         && board[row1 - 1][col1 - 1].color !== this.color)
-        || (this.checkEnpassant() === col1 - 1 && row1 - 1 === 2)) {
+        || (board[row1 - 1][col1 - 1] === 'enpassant')) {
           this.possible_moves.push([row1 - 1, col1 - 1]);
         }
       }
       if (row1 - 1 >= 0 && col1 + 1 < 8) {
         if ((board[row1 - 1][col1 + 1]
           && board[row1 - 1][col1 + 1].color !== this.color)
-          || (this.checkEnpassant() === col1 + 1 && row1 - 1 === 2)) {
+          || (board[row1 - 1][col1 + 1] === 'enpassant')) {
           this.possible_moves.push([row1 - 1, col1 + 1]);
         }
       }

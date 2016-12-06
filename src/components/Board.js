@@ -54,8 +54,8 @@ pressFunction(loc) {
 
 clickPromote(piece) {
   return () => {
-    const { activeSq, board, turn } = this.props;
-    this.props.promotePawn(activeSq, piece, board, turn);
+    const { prev, board, turn, activeSq } = this.props;
+    this.props.promotePawn(prev, activeSq, piece, board, turn);
   };
 }
 

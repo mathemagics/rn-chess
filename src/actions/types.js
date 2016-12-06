@@ -9,3 +9,4 @@ export const CLICK_OTHER = 'click_other';
 export const MAKE_MOVE = 'make_move';
 export const PROMOTION = 'promotion';
 export const PROMOTE_PAWN = 'promote_pawn';
+export const NOTICE = 'notice';

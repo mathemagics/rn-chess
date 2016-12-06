@@ -42,6 +42,15 @@ class Chess {
     const sRow = parseInt(sq[0], 10);
     const sCol = parseInt(sq[1], 10);
     const board = newBoard;
+    // clear enpassant
+    for (let i = 0; i < 8; i++) {
+      if (!(sRow === 2 && sCol === i)) {
+        board[2][i] = board[2][i] === 'enpassant' ? null : board[2][i];
+      }
+      if (!(sRow === 5 && sCol === i)) {
+        board[5][i] = board[5][i] === 'enpassant' ? null : board[5][i];
+      }
+    }
     const thisPiece = board[pRow][pCol];
     // checking if castle
     if (thisPiece.constructor.name === 'King' && thisPiece.initial) {
@@ -60,29 +69,39 @@ class Chess {
           board[7][0] = null;
         }
     } else if (thisPiece.constructor.name === 'Pawn') {
-      // setting promotion:
-      if (sRow === 7 || sRow === 0) {
+      // adding en passant squares
+      if (sRow - pRow === 2) {
+        board[pRow + 1][pCol] = 'enpassant';
+      } else if (pRow - sRow === 2) {
+        board[pRow - 1][pCol] = 'enpassant';
+      } else if (sRow === 7 || sRow === 0) {
+        // setting promotion:
         return { response: 'promote', nextBoard: board };
-      } else if (Math.abs(pCol - sCol) === 1 && !board[sRow][sCol]) {
+      } else if (board[sRow][sCol] === 'enpassant') {
         // removing attacked piece through en passant
+        if (sRow === 2) board[3][sCol] = null;
+        else if (sRow === 5) board[4][sCol] = null;
       }
     }
     // setting real board
+    thisPiece.initial = false;
     board[sRow][sCol] = board[pRow][pCol];
     board[pRow][pCol] = null;
     return { response: 'move', nextBoard: board };
-    // this.lastMove = { piece: this.thisPiece.constructor.name, pRow, pCol, sRow, sCol };
   }
 
   static checkCheck(sRow, sCol, board) {
-     const movesArr = board[sRow][sCol].movement(sRow, sCol);
-     for (let i = 0, n = movesArr.length; i < n; i++) {
-       const atkd = board[movesArr[i][0]][movesArr[i][1]];
-       if (atkd && atkd instanceof King && atkd.color !== this.thisPiece.color) {
-         console.log('CHECK!');
-           return true;
-       }
-     }
+    const thisPiece = board[sRow][sCol];
+    console.log(thisPiece);
+    const movesArr = thisPiece.movement(sRow, sCol);
+    for (let i = 0, n = movesArr.length; i < n; i++) {
+      const atkd = board[movesArr[i][0]][movesArr[i][1]];
+      if (atkd && atkd instanceof King && atkd.color !== thisPiece.color) {
+        console.log('CHECK!');
+        return true;
+      }
+    }
+    return false;
   }
 
   static checkCheckmate(board, turn) {
@@ -117,7 +136,8 @@ class Chess {
       for (let j = 0; j < 8; j++) {
         // getting enemy pieces
         const atkr = board[i][j];
-        if (atkr && atkr.color !== checkColor) {
+        console.log(atkr);
+        if (atkr && atkr !== 'enpassant' && atkr.color !== checkColor) {
           const movesArr = atkr.movement(i, j, board);
 
           // checking if our king is in their movelist
@@ -139,9 +159,12 @@ class Chess {
     return true;
   }
 
-
-  static setPromotion(sRow, sCol, piece, board, turn) {
+  static setPromotion(sRow, sCol, prev, piece, board, turn) {
     let promoted;
+    const pRow = parseInt(prev[0], 10);
+    const pCol = parseInt(prev[1], 10);
+    console.log(board);
+    console.log(board[prev[0]]);
     switch (piece) {
       case '\u2655':
       case '\u265B':
@@ -163,15 +186,8 @@ class Chess {
       break;
     }
     board[sRow][sCol] = promoted;
+    board[pRow][pCol] = null;
     return board;
-    // promoting = false;
-    // if (this.checkCheck()) {
-    //   check = true;
-    //   if (this.checkCheckmate()) {
-    //     endGame();
-    //   }
-    // }
-    // reset();
   }
 
   static checkCheck = (sRow, sCol, board) => {
@@ -179,42 +195,10 @@ class Chess {
      const movesArr = thisPiece.movement(sRow, sCol, board);
      for (let i = 0, n = movesArr.length; i < n; i++) {
        const atkd = board[movesArr[i][0]][movesArr[i][1]];
-       if (atkd && atkd instanceof King && atkd.color !== thisPiece.color) {
+       if (atkd && atkd !== 'enpassant' && atkd instanceof King && atkd.color !== thisPiece.color) {
            return true;
        }
      }
-  }
-
-  processMove = () => {
-    if (!this.check || this.removeCheck()) {
-      this.movePiece();
-      if (!this.promoting) {
-        if (this.checkCheck()) {
-          this.check = true;
-          if (this.checkCheckmate()) {
-            this.endGame();
-          }
-        }
-        this.reset();
-      }
-    }
-  }
-
-  getMoves = (sRow, sCol) => {
-    //  if clicked square is not in availMoves, set new availMoves
-    if (!this.isCoordInArr([sRow, sCol], this.availMoves)) {
-      // choosing your own piece
-      const aPiece = this.board[sRow][sCol];
-      if (aPiece && aPiece.color === this.turn) {
-        return aPiece.movement(sRow, sCol, this.board);
-      }
-      //setting previous position
-      this.pRow = sRow;
-      this.pCol = sCol;
-    } else {
-      console.log('here3');
-      // this.processMove();
-    }
   }
 
   isCoordInArr = (coord, arr) => {

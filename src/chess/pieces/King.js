@@ -55,7 +55,7 @@ class King extends Piece {
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         const atkr = this.board[i][j];
-        if (atkr && atkr.color !== this.color) {
+        if (atkr && atkr !== 'enpassant' && atkr.color !== this.color) {
           if (atkr instanceof King) {
             // check to see if in range of enemy king
           } else if (this.isCoordInArr([move[0], move[1]], atkr.movement(i, j, this.board))) {

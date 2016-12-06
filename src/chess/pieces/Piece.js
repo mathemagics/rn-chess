@@ -25,7 +25,7 @@ class Piece {
     checkSquare(row, col) {
       let blocked = true;
       if (this.isTeammate([row, col])) {
-        console.log('why am i here?');
+        // console.log('why am i here?');
       } else if (this.isEnemy([row, col])) {
         this.possible_moves.push([row, col]);
       } else {
@@ -43,7 +43,6 @@ class Piece {
       }
       return false;
     }
-
 }
 
 export default Piece;

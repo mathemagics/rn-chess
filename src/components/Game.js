@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import { connect } from 'react-redux';
 import Board from './Board';
 import XLabel from './XLabel';
 import YLabel from './YLabel';
-import { Card, CardSection } from './common';
+import { Card, CardSection, Notice } from './common';
 
 class Game extends Component {
+
+  renderNotice() {
+    const { notice } = this.props;
+    if (notice) {
+      return (
+        <Notice notice={notice} />
+      );
+    }
+  }
 
   render() {
   return (
@@ -28,10 +38,16 @@ class Game extends Component {
           <XLabel />
         </View>
       </CardSection>
+      {this.renderNotice()}
     </Card>
 
     );
   }
 }
 
-export default Game;
+const mapStateToProps = ({ chess }) => {
+  const { notice } = chess;
+  return { notice };
+};
+
+export default connect(mapStateToProps, null)(Game);

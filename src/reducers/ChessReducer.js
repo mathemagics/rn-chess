@@ -5,7 +5,8 @@ import {
   CLICK_OTHER,
   MAKE_MOVE,
   PROMOTION,
-  PROMOTE_PAWN
+  PROMOTE_PAWN,
+  NOTICE
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -14,7 +15,8 @@ const INITIAL_STATE = {
  turn: 'white',
  prev: null,
  promoting: false,
- activeSq: ''
+ activeSq: '',
+ notice: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -25,23 +27,40 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         highlighted: moves,
-        prev: `${r}${c}`
+        prev: `${r}${c}`,
+        notice: ''
       };
     }
     case MAKE_MOVE: {
       const nextTurn = state.turn === 'white' ? 'black' : 'white';
-      return { ...state, highlighted: [], prev: null, turn: nextTurn };
+      return { ...state, highlighted: [], prev: null, turn: nextTurn, notice: '' };
     }
     case CLICK_OTHER:
-      return { ...state, highlighted: [] };
+      return { ...state, highlighted: [], notice: '' };
     case PROMOTION:
       return { ...state, promoting: true, activeSq: action.payload };
     case PROMOTE_PAWN: {
       const { nextBoard } = action.payload;
       const nextTurn = state.turn === 'white' ? 'black' : 'white';
-      return { ...state, promoting: false, board: nextBoard, turn: nextTurn };
+      return {
+        ...state,
+        highlighted: [],
+        prev: null,
+        notice: '',
+        promoting: false,
+        board: nextBoard,
+        turn: nextTurn
+      };
     }
-
+    case NOTICE:
+      return {
+        ...state,
+        notice: action.payload,
+        highlighted: [],
+        prev: null,
+        promoting: false,
+        activeSq: ''
+      };
     default:
       return state;
   }
