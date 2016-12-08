@@ -10,3 +10,5 @@ export const MAKE_MOVE = 'make_move';
 export const PROMOTION = 'promotion';
 export const PROMOTE_PAWN = 'promote_pawn';
 export const NOTICE = 'notice';
+export const SET_GAME = 'set_game';
+export const RECEIVE_MOVE = 'receive_move';

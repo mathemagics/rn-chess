@@ -62,7 +62,6 @@ const mapStateToProps = state => {
     });
     // returned format:
     // [ { creator: { uid: uid }, state: number}, gameId: gameId } ... ]
-    console.log('gamelist games:', games);
     return { games };
 };
 

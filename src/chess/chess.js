@@ -43,6 +43,8 @@ class Chess {
     const sCol = parseInt(sq[1], 10);
     const board = newBoard;
     // clear enpassant
+    console.log(board);
+
     for (let i = 0; i < 8; i++) {
       if (!(sRow === 2 && sCol === i)) {
         board[2][i] = board[2][i] === 'enpassant' ? null : board[2][i];
@@ -52,8 +54,9 @@ class Chess {
       }
     }
     const thisPiece = board[pRow][pCol];
+    console.log('thispiece', thisPiece);
     // checking if castle
-    if (thisPiece.constructor.name === 'King' && thisPiece.initial) {
+    if (thisPiece && thisPiece.constructor.name === 'King' && thisPiece.initial) {
         // checking which rook to swap
         if (sRow === 0 && sCol === 6) {
           board[0][5] = board[0][7];
@@ -68,7 +71,7 @@ class Chess {
           board[7][3] = board[7][0];
           board[7][0] = null;
         }
-    } else if (thisPiece.constructor.name === 'Pawn') {
+    } else if (thisPiece && thisPiece.constructor.name === 'Pawn') {
       // adding en passant squares
       if (sRow - pRow === 2) {
         board[pRow + 1][pCol] = 'enpassant';

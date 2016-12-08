@@ -8,12 +8,6 @@ const RouterComponent = () => {
   return (
 
     <Router sceneStyle={{ paddingTop: 65 }}>
-      <Scene
-        key='game'
-        component={Game}
-        title="Play!"
-      />
-
       <Scene key='auth'>
         <Scene
           key='login'
@@ -30,7 +24,11 @@ const RouterComponent = () => {
           component={GamesList}
           title="Open Games"
         />
-
+        <Scene
+          key='game'
+          component={Game}
+          title="Play!"
+        />
       </Scene>
     </Router>
   );

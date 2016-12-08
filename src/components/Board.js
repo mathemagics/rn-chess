@@ -47,15 +47,15 @@ class Board extends Component {
 
 pressFunction(loc) {
   return () => {
-    const { board, highlighted, prev, turn } = this.props;
-    this.props.clickSquare(loc, board, highlighted, prev, turn);
+    const { board, highlighted, prev, turn, gameId } = this.props;
+    this.props.clickSquare(loc, board, highlighted, prev, turn, gameId);
   };
 }
 
 clickPromote(piece) {
   return () => {
-    const { prev, board, turn, activeSq } = this.props;
-    this.props.promotePawn(prev, activeSq, piece, board, turn);
+    const { prev, board, turn, activeSq, gameId } = this.props;
+    this.props.promotePawn(prev, activeSq, piece, board, turn, gameId);
   };
 }
 
@@ -92,8 +92,8 @@ const styles = {
 };
 
 const mapStateToProps = ({ chess }) => {
-  const { board, highlighted, prev, promoting, turn, activeSq } = chess;
-  return { highlighted, board, prev, turn, promoting, activeSq };
+  const { board, highlighted, prev, promoting, turn, activeSq, gameId } = chess;
+  return { highlighted, board, prev, turn, promoting, activeSq, gameId };
 };
 
 export default connect(mapStateToProps, { clickSquare, promotePawn })(Board);
