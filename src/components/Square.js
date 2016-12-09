@@ -8,7 +8,7 @@ const Square = (props) => {
         <View
           style={{
             ...squareStyles,
-            backgroundColor: props.highlight ? 'green' : props.color }}
+            backgroundColor: props.highlight ? '#00cc99' : props.color }}
         >
           <Text style={pieceStyles}>{props.piece}</Text>
         </View>

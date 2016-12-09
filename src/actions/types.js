@@ -12,3 +12,4 @@ export const PROMOTE_PAWN = 'promote_pawn';
 export const NOTICE = 'notice';
 export const SET_GAME = 'set_game';
 export const RECEIVE_MOVE = 'receive_move';
+export const RECEIVE_MSG = 'receive_message';

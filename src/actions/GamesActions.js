@@ -78,17 +78,17 @@ export const joinGame = (gameId) => {
       }
     });
     const openGames = ref.orderByChild('state').equalTo(1);
-    const game = firebase.database().ref(`/games/${gameId}/moves`);
-    game.once('value', () => {
-      console.log('value changed: setting game');
-      dispatch({ type: SET_GAME, payload: { id: gameId, color: user.side } });
-    });
-    game.on('child_added', snapshot => {
-      console.log('move child added');
-      dispatch({ type: RECEIVE_MOVE, payload: snapshot.val() });
-    });
-    ref.off();
-    openGames.off();
+      const game = firebase.database().ref(`/games/${gameId}/moves`);
+      game.once('value', () => {
+        console.log('value changed: setting game');
+        dispatch({ type: SET_GAME, payload: { id: gameId, color: user.side } });
+      });
+      game.on('child_added', snapshot => {
+        console.log('move child added');
+        dispatch({ type: RECEIVE_MOVE, payload: snapshot.val() });
+      });
+      ref.off();
+      openGames.off();
     Actions.game({ gameId });
   };
 };
