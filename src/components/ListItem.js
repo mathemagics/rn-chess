@@ -10,7 +10,7 @@ class ListItem extends Component {
     this.props.joinGame(this.props.game.gameId);
   }
   render() {
-    const { uid } = this.props.game.creator;
+    const { username } = this.props.game.creator;
     return (
       <TouchableOpacity onPress={this.onRowPress.bind(this)}>
         <View>
@@ -18,7 +18,7 @@ class ListItem extends Component {
               <Text
                 style={styles.textStyle}
               >
-                {uid}
+                {username}
               </Text>
             </CardSection>
         </View>

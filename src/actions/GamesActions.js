@@ -47,6 +47,7 @@ export const createGame = () => {
     const currentGame = {
             creator: {
                 uid: user.uid,
+                username: user.displayName,
                 side: user.side
             },
             state: 1
@@ -72,6 +73,7 @@ export const joinGame = (gameId) => {
         game.state = 2;
         game.joiner = {
             uid: user.uid,
+            username: user.displayName,
             side: user.side
         };
         return game;

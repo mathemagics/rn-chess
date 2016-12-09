@@ -3,6 +3,7 @@ import firebase from 'firebase';
 
 import {
   EMAIL_CHANGED,
+  USERNAME_CHANGED,
   PASSWORD_CHANGED,
   LOGIN_ATTEMPT,
   LOGIN_USER_SUCCESS,
@@ -16,6 +17,13 @@ export const emailChanged = (text) => {
   });
 };
 
+export const usernameChanged = (text) => {
+  return ({
+    type: USERNAME_CHANGED,
+    payload: text
+  });
+};
+
 export const passwordChanged = (text) => {
   return ({
     type: PASSWORD_CHANGED,
@@ -23,7 +31,7 @@ export const passwordChanged = (text) => {
   });
 };
 
-export const loginUser = ({ email, password }) => {
+export const loginUser = ({ email, password, username }) => {
   return (dispatch) => {
     dispatch({ type: LOGIN_ATTEMPT });
     firebase.auth().signInWithEmailAndPassword(email, password)
@@ -31,7 +39,7 @@ export const loginUser = ({ email, password }) => {
       .catch((e) => {
         console.log(e);
         firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(user => loginUserSuccess(dispatch, user))
+        .then(user => loginUserSuccess(dispatch, user, username))
         .catch((err) => {
           console.log(err);
           loginUserFail(dispatch);
@@ -40,7 +48,8 @@ export const loginUser = ({ email, password }) => {
   };
 };
 
-const loginUserSuccess = (dispatch, user) => {
+const loginUserSuccess = (dispatch, user, username) => {
+  user.updateProfile({ displayName: username });
   dispatch({
     type: LOGIN_USER_SUCCESS,
     payload: user
