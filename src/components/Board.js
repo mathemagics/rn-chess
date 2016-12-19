@@ -18,7 +18,7 @@ class Board extends Component {
     this.board = {};
     for (let i = 0; i < 8; i++) {
      for (let j = 0; j < 8; j++) {
-      const color = (i + j) % 2 !== 0 ? '#C98F55' : '#F0D9C2';
+      const color = (i + j) % 2 !== 0 ? '#C3A790' : '#EDDACA';
       const piece = chessBoard[i][j];
       const symbol = piece ? piece.code : '';
       const highlight = highlighted && highlighted.includes(`${i}${j}`);

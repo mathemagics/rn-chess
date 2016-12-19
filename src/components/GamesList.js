@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { View, ListView, Text } from 'react-native';
-import Swiper from 'react-native-swiper';
+import { View, ListView } from 'react-native';
+import ActionButton from 'react-native-action-button';
 import { gamesFetch, createGame } from '../actions';
-import { Button, CardSection } from './common';
 import ListItem from './ListItem';
 
 class GamesList extends Component {
@@ -37,27 +36,18 @@ class GamesList extends Component {
 
   render() {
     return (
-      <Swiper style={styles.wrapper} showsButtons>
-        <View>
-          <CardSection>
-            <ListView
-              enableEmptySections
-              dataSource={this.dataSource}
-              renderRow={this.renderRow}
-            />
-          </CardSection>
-          <CardSection>
-            <Button
-              onPress={this.pressCreateGame.bind(this)}
-            >
-              New Game
-            </Button>
-          </CardSection>
-        </View>
-        <View style={styles.slide3}>
-          <Text style={styles.text}>And simple</Text>
-        </View>
-      </Swiper>
+      <View style={{ flex: 1, backgroundColor: '#ffffff', top: 100 }}>
+        <ListView
+          enableEmptySections
+          dataSource={this.dataSource}
+          renderRow={this.renderRow}
+        />
+        <ActionButton
+          buttonColor='#D63D29'
+          onPress={this.pressCreateGame.bind(this)}
+          offsetY={100}
+        />
+      </View>
     );
   }
 }
@@ -69,23 +59,6 @@ const mapStateToProps = state => {
     // returned format:
     // [ { creator: { uid: uid }, state: number}, gameId: gameId } ... ]
     return { games };
-};
-
-const styles = {
-  wrapper: {
-  },
-  slide3: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#92BBD9',
-    bottom: 100
-  },
-  text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold',
-  }
 };
 
 export default connect(

@@ -28,7 +28,7 @@ const styles = {
   },
   containerStyles: {
     paddingTop: 12,
-    height: 292,
+    height: 284,
     width: 26,
     flexDirection: 'column',
     backgroundColor: '#1A3461'

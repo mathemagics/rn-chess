@@ -46,6 +46,7 @@ export const createGame = () => {
     const key = ref.push();
     const currentGame = {
             creator: {
+                uImg: user.photoURL,
                 uid: user.uid,
                 username: user.displayName,
                 side: user.side
@@ -72,6 +73,7 @@ export const joinGame = (gameId) => {
         user.side = game.creator.side === 'white' ? 'black' : 'white';
         game.state = 2;
         game.joiner = {
+            uImg: user.photoURL,
             uid: user.uid,
             username: user.displayName,
             side: user.side
@@ -91,6 +93,6 @@ export const joinGame = (gameId) => {
       });
       ref.off();
       openGames.off();
-    Actions.game({ gameId });
+      Actions.game({ gameId });
   };
 };
